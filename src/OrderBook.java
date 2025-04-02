@@ -97,8 +97,7 @@ public class OrderBook {
             return order.getIsBid() ? ask : bid;
         } else if (SAME_OR_OPPOSITE.equalsIgnoreCase("opposite")) {
             return order.getIsBid() ? bid : ask;
-        } else {
-            System.out.println("ERROR - input 'same' or 'opposite'.");
+        } else { System.out.println("ERROR - input 'same' or 'opposite'.");
             return null;
         }
     }
