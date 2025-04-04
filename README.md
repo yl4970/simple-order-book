@@ -1,4 +1,4 @@
-# Limit Order Book
+# Limit mypackage.Order Book
 
 This project implements the core logic for an **order book**, focusing on efficient data structures to manage and process orders in a trading system.
 
@@ -6,14 +6,14 @@ This project implements the core logic for an **order book**, focusing on effici
 An order book is a fundamental data structure in financial markets, where it holds a list of buy and sell orders for a given asset. This project simulates an order book by efficiently handling orders, matching them, and providing a simple interface for placing, modifying, and removing orders.
 
 ### Features
-- **Order Management**: Add, modify, and remove orders from the order book.
+- **mypackage.Order Management**: Add, modify, and remove orders from the order book.
 - **Price-Time Priority**: The order book respects price-time priority when matching orders.
 - **Efficient Data Structures**: Implemented using appropriate data structures to ensure fast retrieval and updates.
 - **Simple Interface**: Provides a straightforward interface to interact with the order book, including placing buy/sell orders.
 
 ### Project Structure
-- **OrderBook**: The central class that handles the storage and management of orders.
-- **Order**: Represents individual buy or sell orders, including fields like price, quantity, and order type.
+- **mypackage.Receiver.OrderBook**: The central class that handles the storage and management of orders.
+- **mypackage.Order**: Represents individual buy or sell orders, including fields like price, quantity, and order type.
 - **Receiver (Market Data Receiver)**: A Python-based receiver that simulates streaming market data into the order book.
 - **Config**: Configuration files to manage connection details and API keys.
 
@@ -62,7 +62,7 @@ API_KEY=your_databento_api_key
 #### **How It Works**
 
 * Market Data Simulation: The Python server.py script streams market data to the Java order book using a socket connection.
-* Order Book Logic: The Java Receiver listens for incoming market data, processes the data, and places orders into the OrderBook based on the received information.
+* mypackage.Order Book Logic: The Java Receiver listens for incoming market data, processes the data, and places orders into the mypackage.Receiver.OrderBook based on the received information.
 
 #### **Contribution** 
 
