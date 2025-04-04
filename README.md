@@ -64,7 +64,7 @@ API_KEY=your_databento_api_key
 * Market Data Simulation: The Python server.py script streams market data to the Java order book using a socket connection.
 * Order Book Logic: The Java Receiver listens for incoming market data, processes the data, and places orders into the OrderBook based on the received information.
 
-#### **Contribution**
+#### **Contribution** 
 
 * If you’d like to contribute to this project, feel free to fork the repository, submit pull requests, and report issues.
 
