@@ -4,11 +4,12 @@ import numpy as np
 import signal
 import sys
 import socket
-from settings import API_KEY
+import json
+from settings import *
 
 # Socket setup
-HOST = '127.0.0.1'  # Localhost
-PORT = 5001         # Same port Java will connect to
+HOST = SERVER_HOST  # Localhost
+PORT = SERVER_PORT  # Same port Java will connect to
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 server_socket.listen(1)
@@ -25,14 +26,29 @@ data = client.subscribe(
     dataset="EQUS.MINI",
     schema="mbp-1",
     symbols="AAPL",
-    start="2025-04-02T09:30:00"  # Used for live replay
+    start="2025-04-03T09:30:00"  # Used for live replay
 )
 
 def stream(data):
     if data.side == "B":
-        msg = f"{data.action} @{(data.levels[0].bid_px)/1000000000} {data.levels[0].bid_sz} shares."
-    else: msg = f"{data.action} @{data.levels[0].ask_px/1000000000} {data.levels[0].ask_sz} shares."
-    conn.sendall(msg.encode())  # Send data to Java
+        msg ={
+            "action":data.action,
+            "side": "B",
+            "price": data.levels[0].bid_px/1e9,
+            "shares": data.levels[0].bid_sz
+        }
+    else:
+        msg ={
+            "action":data.action,
+            "side": "A",
+            "price": data.levels[0].ask_px/1e9,
+            "shares": data.levels[0].asksz
+        }
+    # Serialize the dictionary to a JSON string
+    json_message = json.dumps(msg)
+
+    # Send the JSON string to Java
+    conn.sendall(json_message.encode())  # Send data as JSON
 
 client.add_callback(stream)
 

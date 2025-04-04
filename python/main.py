@@ -1,16 +1,16 @@
 import subprocess
 import time
-from settings import python_data_server_path, java_complied_class_path
-
+from settings import JAVA_COMPLIED_CLASS_DIR, PYTHON_DATA_SERVER_DIR
+""
 
 # Path to the Python script for the market data sender (make sure the path is correct)
-python_server_script = java_complied_class_path
+python_server_script = PYTHON_DATA_SERVER_DIR
 
 # Command to run the Java receiver
 java_receiver_command = ["java",
                          "-cp",
-                         python_data_server_path,
-                         "MarketDataReceiver"]
+                         JAVA_COMPLIED_CLASS_DIR,
+                         "Receiver"]
 
 # Start the Python server (it will run asynchronously)
 python_process = subprocess.Popen(["python3", python_server_script])

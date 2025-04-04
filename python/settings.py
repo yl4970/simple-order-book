@@ -7,6 +7,10 @@ load_dotenv()
 # Get the API key
 API_KEY = os.getenv("API_KEY")
 
+# Get server host and port
+SERVER_HOST = os.getenv("SERVER_HOST")
+SERVER_PORT = int(os.getenv("SERVER_PORT"))
+
 # Get path
-python_data_server_path = os.getenv("python_data_server_path")
-java_complied_class_path = os.getenv("java_complied_class_path")
+PYTHON_DATA_SERVER_DIR = os.getenv("PYTHON_DATA_SERVER_DIR")
+JAVA_COMPLIED_CLASS_DIR = os.getenv("JAVA_COMPLIED_CLASS_DIR")
