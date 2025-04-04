@@ -17,6 +17,27 @@ An order book is a fundamental data structure in financial markets, where it hol
 - **Receiver (Market Data Receiver)**: A Python-based receiver that simulates streaming market data into the order book.
 - **Config**: Configuration files to manage connection details and API keys.
 
+```bash
+order_book/
+│── data/
+│     ├──market_data.json
+│ 
+│── databento_py/
+│         ├── main.py
+│         ├── market_data_server.py
+│         ├── settings.py
+│ 
+│── src/main/java/mypackage/
+│                   ├── Config.java
+│                   ├── Receiver.java
+│                   ├── OrderBook.java
+│                   ├── Order.java
+│── .env
+│── pom.xml
+│── README.md
+│── .gitignore
+```
+
 ### Requirements
 To run this project, you'll need:
 - **Java** (JDK 8 or higher)
