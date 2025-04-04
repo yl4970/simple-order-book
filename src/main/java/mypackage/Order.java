@@ -1,3 +1,5 @@
+package mypackage;
+
 import java.util.*;
 
 public class Order {
@@ -24,7 +26,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [" + id + "] " + orderSide + ", " + shares + " shares, @" + price;
+        return "mypackage.Order [" + id + "] " + orderSide + ", " + shares + " shares, @" + price;
     }
 
     // Getters
