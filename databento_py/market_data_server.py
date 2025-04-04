@@ -26,7 +26,7 @@ data = client.subscribe(
     dataset="EQUS.MINI",
     schema="mbp-1",
     symbols="AAPL",
-    start="2025-04-03T09:30:00"  # Used for live replay
+    start=NOW  # Used for live replay
 )
 
 def stream(data):
