@@ -1,0 +1,8 @@
+{
+  "action": "A",
+  "side": "B",
+  "bid_price": 100,
+  "bid_shares": 99,
+  "ask_price": 80,
+  "ask_shares": 60
+}
