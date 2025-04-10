@@ -13,28 +13,20 @@ public class Receiver {
     public static void main(String[] args) {
         OrderBook ob = new OrderBook();
 
-        while (true) {
+        try (Socket socket = new Socket(HOST, PORT);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            try (Socket socket = new Socket(HOST, PORT);
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+            System.out.println("Waiting for connection...");
+            System.out.flush();
 
-                System.out.println("Waiting for connection...");
-
-                // Listen for incoming data
-                String incomingData;
-                while ((incomingData = reader.readLine()) != null) {
-                    // Process data into an mypackage.Order object
-                    processData(incomingData, ob);
-
-                    // Print the parsed order (or update your order book with this data)
-                    // System.out.println(incomingData);
-                }
-                break;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                break;
+            // Continuously listen for incoming data
+            String incomingData;
+            while ((incomingData = reader.readLine()) != null) {
+                // Process data into a mypackage.Order object
+                processData(incomingData, ob);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         System.out.println(ob.queueMap);
     }
@@ -43,15 +35,34 @@ public class Receiver {
         // Parse the incoming JSON data
         JSONObject json = new JSONObject(data);
 
-        // Extract order details from JSON
-        String action = json.getString("action");
-        Order.side side = (Objects.equals(json.getString("side"), "B")) ? Order.side.BID : Order.side.ASK;
-        double price = json.getDouble("price");
-        double shares = json.getDouble("shares");
+        // Pass when non-effect order type flows in
+        if (
+            Objects.equals(json.getString("action"), "T") || // An aggressing order traded. Does not affect the book.
+            Objects.equals(json.getString("action"), "F") || // A resting order was filled. Does not affect the book.
+            Objects.equals(json.getString("action"), "N") || // No action: does not affect the book, but may carry flags or other information.
 
-        // Place order to order book
-        Order order = new Order(side, price, shares);
-        order.place(ob);
+            // Unable to implement the logic to cancel order as order_id is unable to specified in realtime datafeed
+            Objects.equals(json.getString("action"), "C")) // Fully or partially cancel an order from the book
+        {} // pass
+
+        // Place order to order book if action == "A" // Insert a new order into the book.
+        else if (Objects.equals(json.getString("action"), "A")) {
+            if (Objects.equals(json.getString("side"), "B")) {
+                Order order = new Order(
+                        Order.side.BID,
+                        json.getDouble("bid_shares"),
+                        json.getDouble("bid_price")
+                );
+                order.place(ob);
+            } else {
+                Order order = new Order(
+                        Order.side.ASK,
+                        json.getDouble("ask_shares"),
+                        json.getDouble("ask_price")
+                );
+                order.place(ob);
+            }
+        }
     }
 }
 
