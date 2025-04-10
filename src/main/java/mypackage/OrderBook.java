@@ -11,6 +11,7 @@ public class OrderBook {
     private HashMap<AbstractMap.SimpleEntry<Double, Integer>, Double> sharesMap;
 
     // Constructor
+    @SuppressWarnings("unchecked")
     public OrderBook() {
         orderMap = new HashMap<Integer, Order>();
         ask = new PriorityQueue<Double>(Comparator.reverseOrder());
@@ -39,7 +40,6 @@ public class OrderBook {
         priceSet.putIfAbsent(order.getSign(), new HashSet<>());
         if (!priceSet.get(order.getSign()).contains(order.getPrice())) {
             // add to priceSet
-            priceSet.put(order.getSign(), new HashSet<Double>());
             priceSet.get(order.getSign()).add(order.getPrice());
             // add to sorted price list of the same side
             PriorityQueue<Double> samebook = getBook(order, "same");
@@ -60,7 +60,18 @@ public class OrderBook {
                 order.getShares() > 0) {
             double bestPrice = oppobook.peek();
             AbstractMap.SimpleEntry<Double, Integer> oppoKey = new AbstractMap.SimpleEntry<>(bestPrice, order.getSign() * (-1));
-            Order matchedOrder = queueMap.get(oppoKey).peek();
+            if (sharesMap.get(oppoKey) == 0) {
+                queueMap.remove(oppoKey);
+                oppobook.poll();
+                bestPrice = oppobook.peek();
+                oppoKey = new AbstractMap.SimpleEntry<>(bestPrice, order.getSign() * (-1));
+            }
+            LinkedList<Order> matchedQueue = queueMap.get(oppoKey);
+            if (matchedQueue == null || matchedQueue.isEmpty()) {
+                oppobook.poll();
+                continue;
+            }
+            Order matchedOrder = matchedQueue.peek();
             double tradeShares = Math.min(order.getShares(), matchedOrder.getShares());
             fillShares(order, tradeShares);
             fillShares(matchedOrder, tradeShares);
@@ -76,6 +87,7 @@ public class OrderBook {
             PriorityQueue<Double> samebook = getBook(order, "same");
             samebook.remove(order.getPrice());
             queueMap.remove(order.getKey());
+            priceSet.get(order.getSign()).remove(order.getPrice());
         }
     }
 
