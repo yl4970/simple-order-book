@@ -84,7 +84,9 @@ public class Order {
 
     // message print for order filled
     private void notifFilledOrder(Order order, double price, double exeShares) {
-        System.out.println("[" + order.id + "] " + order.orderSide + " order filled @" + Math.abs(price) + ", "
-            + exeShares + " shares.");
+        System.out.println("[" + order.id + "] " + order.orderSide + " order " +
+                (exeShares < order.shares ? "PARTIAL " : "FULLY ") +
+                "filled @" + Math.abs(price) + ", "
+                + exeShares + " shares.");
     }
 }
