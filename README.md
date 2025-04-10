@@ -1,4 +1,4 @@
-# Limit mypackage.Order Book
+# Limit Order Book with Real-Time Data Feeds (databento)
 
 This project implements the core logic for an **order book**, focusing on efficient data structures to manage and process orders in a trading system.
 
@@ -17,21 +17,21 @@ An order book is a fundamental data structure in financial markets, where it hol
 - **Receiver (Market Data Receiver)**: A Python-based receiver that simulates streaming market data into the order book.
 - **Config**: Configuration files to manage connection details and API keys.
 
-```bash
+```
 order_book/
 │── data/
 │     ├──market_data.json
 │ 
 │── databento_py/
-│         ├── main.py
-│         ├── market_data_server.py
-│         ├── settings.py
+│       ├── main.py
+│       ├── market_data_server.py
+│       ├── settings.py
 │ 
 │── src/main/java/mypackage/
-│                   ├── Config.java
-│                   ├── Receiver.java
-│                   ├── OrderBook.java
-│                   ├── Order.java
+│         ├── Config.java
+│         ├── Receiver.java
+│         ├── OrderBook.java
+│         ├── Order.java
 │── .env
 │── pom.xml
 │── README.md
