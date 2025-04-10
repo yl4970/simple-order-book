@@ -26,29 +26,25 @@ data = client.subscribe(
     dataset="EQUS.MINI",
     schema="mbp-1",
     symbols="AAPL",
-    start=NOW  # Used for live replay
+    start="2025-04-10T09:30:00"  # Used for live replay
 )
 
 def stream(data):
-    if data.side == "B":
-        msg ={
-            "action":data.action,
-            "side": "B",
-            "price": data.levels[0].bid_px/1e9,
-            "shares": data.levels[0].bid_sz
+    msg ={
+        "action":data.action,
+        "side": data.side,
+        "bid_price": data.levels[0].bid_px/1e9,
+        "bid_shares": data.levels[0].bid_sz,
+        "ask_price": data.levels[0].ask_px/1e9,
+        "ask_shares": data.levels[0].ask_sz
         }
-    else:
-        msg ={
-            "action":data.action,
-            "side": "A",
-            "price": data.levels[0].ask_px/1e9,
-            "shares": data.levels[0].asksz
-        }
+
     # Serialize the dictionary to a JSON string
     json_message = json.dumps(msg)
+    # print(json_message)
 
     # Send the JSON string to Java
-    conn.sendall(json_message.encode())  # Send data as JSON
+    conn.sendall((json_message + "\n").encode())  # Send data as JSON
 
 client.add_callback(stream)
 
